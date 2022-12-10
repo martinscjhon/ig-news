@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
-import { ButtonAction } from "../components/ButtonAction";
+import { SubscribeButton } from "../components/SubscribeButton";
 import { stripe } from "../services/stripe";
 import styles from "../styles/home.module.scss";
 
@@ -27,7 +27,7 @@ export default function Home({ product }: HomeProps) {
 						Get access to all the publications <br />
 						<span>for {product.amount} month</span>
 					</p>
-					<ButtonAction priceId={product.priceId} />
+					<SubscribeButton priceId={product.priceId} />
 				</section>
 				<img src="/images/avatar.svg" alt="gril-coding" />
 			</main>
@@ -36,7 +36,7 @@ export default function Home({ product }: HomeProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-	const price = await stripe.prices.retrieve("price_1LztcrDCrBM9tzxj1k2yweAw");
+	const price = await stripe.prices.retrieve(`${process.env.STRIPE_PRICE_ID}`);
 
 	const product = {
 		priceId: price.id,
